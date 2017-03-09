@@ -1,4 +1,3 @@
-// PairWise Swap
 #include <cstring>
 #include <vector>
 #include <list>
@@ -102,34 +101,40 @@ void print(LLNode *head) {
 	cout << '\n' ;
 }
 
-LLNode *pairWiseSwap(LLNode *head) {
-	 LLNode *curr = head -> next , *prev = head ;
-	 LLNode *tmp = NULL ;
+LLNode *deleteOccurences(LLNode *head , int key) {
+	LLNode *prev = NULL , *curr = head ;
+ 	
+ 	while(curr != NULL and curr -> data == key) {
+ 		head = curr -> next ;
+ 		curr = head ;
+ 	}
 
-	 prev = head ;
-	 head = curr ;
+ 	LLNode *tmp = curr ;
+ 	
+ 	while(curr != NULL) {
+ 		while(curr != NULL and curr -> data != key) {
+ 			prev = curr ;
+ 			curr = curr -> next ;
+ 		}
 
-	 while(true) {
-	 	tmp = curr -> next ;
-	 	curr -> next = prev ;
+ 		if(curr == NULL) {
+ 			break ;
+ 		}
 
-	 	if(tmp == NULL or tmp -> next == NULL) {
-	 		prev -> next = tmp ;
-	 		break ;
-	 	}
-
-	 	prev -> next = tmp -> next ;
-	 	prev = tmp ;
-	 	curr = prev -> next ;
-	 }
-
-	 return head ;
+ 		prev -> next = curr -> next ;
+ 		curr = prev -> next ;
+ 	}
+	
+	return tmp ;
 }
 
 int main() {
 
-	int N , num , k ;
-	cin >> N;
+	ios_base::sync_with_stdio(false) ;
+	cin.tie(0) ;
+
+	int N , key, num ;
+	cin >> N >> key ;
 
 	cout << "Enter " << N << " Numbers" << '\n' ;
 
@@ -151,13 +156,7 @@ int main() {
  	}
 
  	head = tmp ;
-
- 	if(N == 1) {
- 		print(head) ;
- 		return 0 ;
- 	}
-
- 	head = pairWiseSwap(head) ;
+ 	head = deleteOccurences(head , key) ;
  	print(head) ;
 
 return 0 ;
